@@ -54,8 +54,8 @@ public class AdminController {
 
     @DeleteMapping("/delete")
     @ResponseBody
-    public String removeUserById(@RequestBody User user) {
-        userServiceImpl.deleteUserById(user.getId());
+    public String removeUserById(@RequestParam Long id) {
+        userServiceImpl.deleteUserById(id);
         return "Ok";
     }
 

@@ -4,8 +4,6 @@
 $(document).ready(function () {
 
 
-
-
     $('.table .dBtn').on('click', function (event) {
         event.preventDefault();
 
@@ -69,8 +67,8 @@ $(document).ready(function () {
         // console.log($("#id").id);
         console.log($("#adminRole").prop("checked"));
         console.log($("#userRole").prop("checked"));
-        var role =[];
-        if($("#userRole").prop("checked")){
+        var role = [];
+        if ($("#userRole").prop("checked")) {
             role.push(
                 {
                     "id": 1,
@@ -78,7 +76,7 @@ $(document).ready(function () {
                 }
             )
         }
-        if($("#adminRole").prop("checked")){
+        if ($("#adminRole").prop("checked")) {
             role.push(
                 {
                     "id": 2,
@@ -108,10 +106,29 @@ $(document).ready(function () {
     });
 
 
+    $("#submitDelete").on('click', function (event) {
+        event.preventDefault();
+        console.log($("#id").val());
+        fetch("api/admin/delete?id=" + $("#deleteId").val(), {
+            method: "DELETE",
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "Ok") {
+                    console.log("User deleted successfully");
+                    $('#deleteModal').modal('hide');
+                    var none = "";
+                    updateUserList();
 
-
-
-
+                } else {
+                    console.log("Unexpected response: " + data);
+                    // Обработка неожиданного ответа при необходимости
+                }
+            })
+            .catch(error => {
+                console.log(error); // Обработка ошибки при необходимости
+            });
+    });
 
 
     console.log("парсим принципала для /user")
@@ -171,15 +188,17 @@ $(document).ready(function () {
 
     console.log("заполняем таблицу на /admin")
 
-    fetch('/api/admin')
-        .then(response => response.json())
-        .then(users => {
-            const userInfoElement = document.getElementById('users-info2');
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                console.log(users)
-
-                userInfoElement.innerHTML += `
+    updateUserList();
+    function updateUserList() {
+        fetch('/api/admin')
+            .then(response => response.json())
+            .then(users => {
+                const userInfoElement = document.getElementById('users-info2');
+                userInfoElement.innerHTML = "";
+                for (var i = 0; i < users.length; i++) {
+                    var user = users[i];
+                    console.log(users)
+                    userInfoElement.innerHTML += `
                 <tr>
                     <td>${user.id}</td>
                     <td>${user.username}</td>
@@ -197,79 +216,79 @@ $(document).ready(function () {
                     </td>
                 </tr>
             `;
-            }
+                }
 
-            // Отменить действие по умолчанию для кнопок eBtn и dBtn
-            const editButtons = document.querySelectorAll('.eBtn');
-            const deleteButtons = document.querySelectorAll('.dBtn');
-
-            editButtons.forEach(button => {
-                button.addEventListener('click', event => {
-                    event.preventDefault();
+                // Отменить действие по умолчанию для кнопок eBtn и dBtn
+                const deleteButtons = document.querySelectorAll('.dBtn');
 
 
-                    const href = button.getAttribute('href');
-                    $.get(href, function(user, status) {
-                        console.log(user);
+                const editButtons = document.querySelectorAll('.eBtn');
+                editButtons.forEach(button => {
+                    button.addEventListener('click', event => {
+                        event.preventDefault();
 
-                        $('#id').val(user.id);
-                        $('#username').val(user.username);
-                        $('#email').val(user.email);
-                        $('#name').val(user.name);
-                        $('#age').val(user.age);
-                        // $('#password').val(user.password);
 
-                        for (var i = 0; i < user.roles.length; i++) {
-                            var role = user.roles[i];
-                            console.log(user.roles)
-                            if (role.name === 'ROLE_ADMIN') {
-                                $('#adminRole').prop('checked', true);
+                        const href = button.getAttribute('href');
+                        $.get(href, function (user, status) {
+                            console.log(user);
+
+                            $('#id').val(user.id);
+                            $('#username').val(user.username);
+                            $('#email').val(user.email);
+                            $('#name').val(user.name);
+                            $('#age').val(user.age);
+                            // $('#password').val(user.password);
+
+                            for (var i = 0; i < user.roles.length; i++) {
+                                var role = user.roles[i];
+                                console.log(user.roles)
+                                if (role.name === 'ROLE_ADMIN') {
+                                    $('#adminRole').prop('checked', true);
+                                }
+                                if (role.name === 'ROLE_USER') {
+                                    $('#userRole').prop('checked', true);
+                                }
                             }
-                            if (role.name === 'ROLE_USER') {
-                                $('#userRole').prop('checked', true);
-                            }
-                        }
+                        });
+
+                        $('.myForm #editModal').modal();
                     });
-
-                    $('.myForm #editModal').modal();
                 });
-            });
 
 
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', event => {
+                        event.preventDefault();
 
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', event => {
-                    event.preventDefault();
+                        const href = button.getAttribute('href');
+                        $.get(href, function (user, status) {
+                            console.log(user);
 
+                            $('#deleteId').val(user.id);
+                            $('#deleteUsername').val(user.username);
+                            $('#deleteEmail').val(user.email);
+                            $('#deleteName').val(user.name);
+                            $('#deleteAge').val(user.age);
+                            // $('#password').val(user.password);
 
-                    const href = button.getAttribute('href');
-                    $.get(href, function(user, status) {
-                        console.log(user);
-
-                        $('#deleteId').val(user.id);
-                        $('#deleteUsername').val(user.username);
-                        $('#deleteEmail').val(user.email);
-                        $('#deleteName').val(user.name);
-                        $('#deleteAge').val(user.age);
-                        // $('#password').val(user.password);
-
-                        for (var i = 0; i < user.roles.length; i++) {
-                            var role = user.roles[i];
-                            console.log(user.roles)
-                            if (role.name === 'ROLE_ADMIN') {
-                                $('#deleteAdminRole').prop('checked', true);
+                            for (var i = 0; i < user.roles.length; i++) {
+                                var role = user.roles[i];
+                                console.log(user.roles)
+                                if (role.name === 'ROLE_ADMIN') {
+                                    $('#deleteAdminRole').prop('checked', true);
+                                }
+                                if (role.name === 'ROLE_USER') {
+                                    $('#deleteUserRole').prop('checked', true);
+                                }
                             }
-                            if (role.name === 'ROLE_USER') {
-                                $('#deleteUserRole').prop('checked', true);
-                            }
-                        }
+                        });
+
+                        $('.myDeleteForm #deleteModal').modal();
                     });
-
-                    $('.myDeleteForm #deleteModal').modal();
                 });
-            });
-        })
+            })
+    }
 
 
 })
