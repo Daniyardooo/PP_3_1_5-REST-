@@ -267,56 +267,56 @@
                                 </thead>
                                 <tr style="background-color: white">
                                     <td>
-<!--                                        <form class="col-md-4 justify-content-center mx-auto"-->
-<!--                                              th:action="@{/admin/users/new}"-->
-<!--                                              th:method="POST">-->
+                                        <form class="col-md-4 justify-content-center mx-auto"
+                                              th:action="@{/admin/users/new}"
+                                              th:method="POST">
 
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold" for="newID">ID</label>-->
-<!--                                                <input class="form-control" disabled id="newID"-->
-<!--                                                       th:value="${nextUserId}"-->
-<!--                                                       type="text">-->
-<!--                                            </div>-->
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold" for="newID">ID</label>
+                                                <input class="form-control" disabled id="newID"
+                                                       th:value="${nextUserId}"
+                                                       type="text">
+                                            </div>
 
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold"-->
-<!--                                                       for="newUsername">Username</label>-->
-<!--                                                <input class="form-control" id="newUsername" minlength="5"-->
-<!--                                                       name="username"-->
-<!--                                                       required type="text">-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold" for="newName">Name</label>-->
-<!--                                                <input class="form-control" id="newName" minlength="5" name="name"-->
-<!--                                                       required type="text">-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold" for="newAge">Age</label>-->
-<!--                                                <input class="form-control" id="newAge" minlength="1" name="age"-->
-<!--                                                       required type="number">-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold"-->
-<!--                                                       for="newPassword">Password</label>-->
-<!--                                                <input class="form-control" id="newPassword" minlength="5"-->
-<!--                                                       name="password" required type="password">-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label class="form-label font-weight-bold" for="newEmail">Email</label>-->
-<!--                                                <input class="form-control" id="newEmail" minlength="5" name="email"-->
-<!--                                                       required type="email">-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center">-->
-<!--                                                <label><input name="roles" type="checkbox" value="1">-->
-<!--                                                    Пользователь</label><br>-->
-<!--                                                <label><input name="roles" type="checkbox" value="2">-->
-<!--                                                    Администратор</label>-->
-<!--                                            </div>-->
-<!--                                            <div class="mb-3 text-center mx-auto">-->
-<!--                                                <button class="btn btn-success" type="submit">Add new user</button>-->
-<!--                                            </div>-->
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold"
+                                                       for="newUsername">Username</label>
+                                                <input class="form-control" id="newUsername" minlength="5"
+                                                       name="username"
+                                                       required type="text">
+                                            </div>
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold" for="newName">Name</label>
+                                                <input class="form-control" id="newName" minlength="5" name="name"
+                                                       required type="text">
+                                            </div>
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold" for="newAge">Age</label>
+                                                <input class="form-control" id="newAge" minlength="1" name="age"
+                                                       required type="number">
+                                            </div>
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold"
+                                                       for="newPassword">Password</label>
+                                                <input class="form-control" id="newPassword" minlength="5"
+                                                       name="password" required type="password">
+                                            </div>
+                                            <div class="mb-3 text-center">
+                                                <label class="form-label font-weight-bold" for="newEmail">Email</label>
+                                                <input class="form-control" id="newEmail" minlength="5" name="email"
+                                                       required type="email">
+                                            </div>
+                                            <div class="mb-3 text-center">
+                                                <label><input name="roles" type="checkbox" value="1">
+                                                    Пользователь</label><br>
+                                                <label><input name="roles" type="checkbox" value="2">
+                                                    Администратор</label>
+                                            </div>
+                                            <div class="mb-3 text-center mx-auto">
+                                                <button class="btn btn-success" type="submit">Add new user</button>
+                                            </div>
 
-<!--                                        </form>-->
+                                        </form>
                                     </td>
                                 </tr>
                             </table>
@@ -341,21 +341,8 @@
                         <th scope="col">Roles</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <!--                    <tr th:object="${user}">-->
-                    <!--                        <td th:text="${user.getId()}"></td>-->
-                    <!--                        <td>-->
-                    <!--                            <p th:text="${user.getUsername()}"></p>-->
-                    <!--                        </td>-->
-                    <!--                        <td th:text="${user.getName()}"></td>-->
-                    <!--                        <td th:text="${user.getAge()}"></td>-->
-                    <!--                        <td th:text="${user.getEmail()}"></td>-->
-                    <!--                        <td>-->
-                    <!--                            <span th:each="role : ${user.getRoles()}">-->
-                    <!--                                <span th:text="${role.getName()}"></span><br/>-->
-                    <!--                            </span>-->
-                    <!--                        </td>-->
-                    <!--                    </tr>-->
+                    <tbody id="principal-info-admin">
+
                     </tbody>
                 </table>
             </div>

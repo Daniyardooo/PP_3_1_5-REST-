@@ -1,12 +1,16 @@
 /**
  *
  */
+
+
 $(document).ready(function () {
 
 
-
-
-   fillHeaders();
+    fillUserHeader();
+    fillAdminHeader();
+    updateUserList();
+    fillUserTableForUser();
+    fillUserTableForAdmin();
 
 
     document.querySelector("#submitEdit").addEventListener('click', function (event) {
@@ -82,39 +86,56 @@ $(document).ready(function () {
     });
 
 
+
     function getPrincipal() {
         return fetch('/api/user')
             .then(response => response.json())
             .catch(error => {
                 console.error(error);
+                console.log("ПОХОДУ ТУТ")
                 throw error;
             });
     }
 
 
-
     console.log("парсим принципала для /user");
-    async function fillHeaders() {
+
+    async function fillUserHeader() {
         console.log('парсим принципала для /user');
         try {
             const user = await getPrincipal();
 
             // Update username
-            document.getElementById('username').textContent = user.username;
+            document.querySelector("#username").textContent = user.username;
+
+            console.log(user.roles.forEach.name);
 
             // Update roles
             const rolesElement = document.getElementById('roles');
-            rolesElement.innerHTML = '';
             user.roles.forEach(role => {
+                console.log(role);
                 const roleElement = document.createElement('span');
+                console.log(roleElement);
                 roleElement.textContent = role.name;
                 rolesElement.appendChild(roleElement);
                 rolesElement.appendChild(document.createElement('br'));
             });
 
-            console.log('заполняем таблицу на /user');
-            const userInfoElement = document.getElementById('user-info');
-            userInfoElement.innerHTML = `
+        } catch (error) {
+            console.error(error);
+            console.log("OSHIBKA")
+        }
+
+    }
+
+    async function fillUserTableForUser() {
+
+        const user = await getPrincipal();
+
+
+        console.log('заполняем таблицу на /user');
+        const userInfoElement = document.getElementById('user-info');
+        userInfoElement.innerHTML = `
       <tr>
         <td>${user.id}</td>
         <td>${user.username}</td>
@@ -125,34 +146,54 @@ $(document).ready(function () {
           ${user.roles.map(role => role.name).join('<br>')}
         </td>
       </tr>
-    `;
-        } catch (error) {
-            console.error(error);
-        }
+    `
     }
 
-    console.log("парсим принципала для /admin")
-    fetch('/api/user')
-        .then(response => response.json())
-        .then(user => {
-            // Update username
-            document.getElementById('username2').textContent = user.username;
+    async function fillUserTableForAdmin() {
 
-            // Update roles
-            const rolesElement2 = document.getElementById('roles2');
-            rolesElement2.innerHTML = '';
-            user.roles.forEach(role => {
-                const roleElement2 = document.createElement('span');
-                roleElement2.textContent = role.name;
-                rolesElement2.appendChild(roleElement2);
-                rolesElement2.appendChild(document.createElement('br'));
-            });
-        })
+        const user = await getPrincipal();
+
+
+        console.log('заполняем таблицу на /user');
+        const userInfoElement = document.getElementById('principal-info-admin');
+        userInfoElement.innerHTML = `
+      <tr>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.name}</td>
+        <td>${user.age}</td>
+        <td>${user.email}</td>
+        <td>
+          ${user.roles.map(role => role.name).join('<br>')}
+        </td>
+      </tr>
+    `
+    }
+
+
+
+
+    async function fillAdminHeader() {
+
+        const user = await getPrincipal();
+
+        document.querySelector("#username2").textContent = user.username;
+
+        // Update roles
+        const rolesElement2 = document.getElementById('roles2');
+        rolesElement2.innerHTML = '';
+        user.roles.forEach(role => {
+            const roleElement2 = document.createElement('span');
+            roleElement2.textContent = role.name;
+            rolesElement2.appendChild(roleElement2);
+            rolesElement2.appendChild(document.createElement('br'));
+        });
+
+    }
 
 
     console.log("заполняем таблицу на /admin")
 
-    updateUserList();
     function updateUserList() {
         fetch('/api/admin')
             .then(response => response.json())
