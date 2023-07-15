@@ -6,6 +6,7 @@ $(document).ready(function () {
 
 
 
+   fillHeaders();
 
 
     document.querySelector("#submitEdit").addEventListener('click', function (event) {
@@ -81,10 +82,23 @@ $(document).ready(function () {
     });
 
 
-    console.log("парсим принципала для /user")
-    fetch('/api/user')
-        .then(response => response.json())
-        .then(user => {
+    function getPrincipal() {
+        return fetch('/api/user')
+            .then(response => response.json())
+            .catch(error => {
+                console.error(error);
+                throw error;
+            });
+    }
+
+
+
+    console.log("парсим принципала для /user");
+    async function fillHeaders() {
+        console.log('парсим принципала для /user');
+        try {
+            const user = await getPrincipal();
+
             // Update username
             document.getElementById('username').textContent = user.username;
 
@@ -98,24 +112,24 @@ $(document).ready(function () {
                 rolesElement.appendChild(document.createElement('br'));
             });
 
-
-            console.log("заполняем таблицу на /user")
+            console.log('заполняем таблицу на /user');
             const userInfoElement = document.getElementById('user-info');
             userInfoElement.innerHTML = `
-              <tr>
-                <td>${user.id}</td>
-                <td>${user.username}</td>
-                <td>${user.name}</td>
-                <td>${user.age}</td>
-                <td>${user.email}</td>
-                <td>
-                  ${user.roles.map(role => role.name).join('<br>')}
-                </td>
-              </tr>
-            `;
-        })
-        .catch(error => console.error(error));
-
+      <tr>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.name}</td>
+        <td>${user.age}</td>
+        <td>${user.email}</td>
+        <td>
+          ${user.roles.map(role => role.name).join('<br>')}
+        </td>
+      </tr>
+    `;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     console.log("парсим принципала для /admin")
     fetch('/api/user')
