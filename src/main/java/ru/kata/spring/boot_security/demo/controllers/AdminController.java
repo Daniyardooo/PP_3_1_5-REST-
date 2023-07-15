@@ -56,7 +56,7 @@ public class AdminController {
     @ResponseBody
     public String removeUserById(@RequestParam Long id) {
         userServiceImpl.deleteUserById(id);
-        return "Ok";
+        return "ok";
     }
 
     @PostMapping("/new")

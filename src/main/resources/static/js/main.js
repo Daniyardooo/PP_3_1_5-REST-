@@ -5,61 +5,55 @@ $(document).ready(function () {
 
 
 
-    $("#incrementAge").click(function () {
-        var age = parseInt($("#age").val());
-        $("#age").val(age + 1);
-    });
-
-    $("#decrementAge").click(function () {
-        var age = parseInt($("#age").val());
-        if (age > 0) {
-            $("#age").val(age - 1);
-        }
-    });
 
 
-    $("#submitEdit").on('click', function (event) {
+
+    document.querySelector("#submitEdit").addEventListener('click', function (event) {
         event.preventDefault();
-        // console.log($(this).parent().find("#id").val());
-        // console.log($("#id").id);
-        console.log($("#adminRole").prop("checked"));
-        console.log($("#userRole").prop("checked"));
+
         var role = [];
-        if ($("#userRole").prop("checked")) {
-            role.push(
-                {
-                    "id": 1,
-                    "name": "ROLE_USER"
-                }
-            )
+        if (document.querySelector("#userRole").checked) {
+            role.push({
+                "id": 1,
+                "name": "ROLE_USER"
+            });
         }
-        if ($("#adminRole").prop("checked")) {
-            role.push(
-                {
-                    "id": 2,
-                    "name": "ROLE_ADMIN"
-                }
-            )
+        if (document.querySelector("#adminRole").checked) {
+            role.push({
+                "id": 2,
+                "name": "ROLE_ADMIN"
+            });
         }
-        $.ajax("api/admin/update", {
-            method: "put",
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "id": $("#id").val(),
-                "username": $("#username").val(),
-                "name": $("#name").val(),
-                "age": $("#age").val(),
-                "password": $("#password").val(),
-                "email": $("#email").val(),
+
+        fetch("api/admin/update", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "id": document.querySelector("#id").value,
+                "username": document.querySelector("#username").value,
+                "name": document.querySelector("#name").value,
+                "age": document.querySelector("#age").value,
+                "password": document.querySelector("#password").value,
+                "email": document.querySelector("#email").value,
                 "roles": role
-            }),
-            dataType: "json",
-            // success: function (msg) {
-            //     $("#users")
-            //         .find("#" + msg)
-            //         .text(";;;");
-            // }
-        });
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "ok") {
+                    console.log("User updated successfully");
+                    $('#editModal').modal('hide');
+                    updateUserList();
+
+                } else {
+                    console.log("Unexpected response: " + data);
+                }
+            })
+            .catch(error => {
+                console.log(error); // Обработка ошибки при необходимости
+            });
     });
 
 
@@ -71,10 +65,9 @@ $(document).ready(function () {
         })
             .then(response => response.text())
             .then(data => {
-                if (data === "Ok") {
+                if (data === "ok") {
                     console.log("User deleted successfully");
                     $('#deleteModal').modal('hide');
-                    var none = "";
                     updateUserList();
 
                 } else {
@@ -245,6 +238,17 @@ $(document).ready(function () {
                     });
                 });
             })
+        $("#incrementAge").click(function () {
+            var age = parseInt($("#age").val());
+            $("#age").val(age + 1);
+        });
+
+        $("#decrementAge").click(function () {
+            var age = parseInt($("#age").val());
+            if (age > 0) {
+                $("#age").val(age - 1);
+            }
+        });
     }
 
 
