@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            type="text/javascript"></script>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+    <meta charset="UTF-8">
+    <style>
+        header {
+            box-sizing: content-box;
+        }
+    </style>
+    <title>aboba</title>
+
+
+</head>
+<header class="p-3 bg-dark text-white" style="position: relative;">
+    <strong>
+        <span id="username2"></span>
+    </strong>
+    <span> with roles: </span>
+    <div id="roles2" class="d-inline"></div>
+    <div style="position: absolute; top: 15px; right: 10px;">
+        <a style="color: #999" href="/logout">Logout</a>
+    </div>
+</header>
+
+<body style="background-color: #f8f9fa">
+
+<!--Sidebar-->
+<div class="row">
+    <div class="col-md-2" style="margin-top: 25px; background-color: white; min-height: 100vh">
+        <div aria-orientation="vertical" class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+            <a aria-controls="v-pills-home" aria-selected="true" class="nav-link active " data-toggle="pill"
+               href="#admin-tab"
+               id="v-pills-home-tab" role="tab">Admin</a>
+            <a aria-controls="v-pills-profile" aria-selected="false" class="nav-link" data-toggle="pill"
+               href="#user-tab"
+               id="v-pills-profile-tab" role="tab">User</a>
+        </div>
+    </div>
+    <!--Вкладки Всеюзеры/Новый юзер тут-->
+    <div class="col-md-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div aria-labelledby="v-pills-home-tab" class="tab-pane fade show active" id="admin-tab" role="tabpanel">
+                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" id="myTabContent" style="flex-grow: 1 ; ">
+                    <h1>Admin panel</h1>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a aria-controls="home" aria-selected="true" class="nav-link active" data-toggle="tab"
+                               href="#home"
+                               id="home-tab"
+                               role="tab">Users table</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a aria-controls="profile" aria-selected="false" class="nav-link" data-toggle="tab"
+                               href="#profile"
+                               id="profile-tab" role="tab">New user</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div aria-labelledby="home-tab" class="tab-pane fade show active" id="home" role="tabpanel">
+                            <table class="table table-striped">
+                                <thead style="background-color: #f7f7f7">
+                                <tr>
+                                    <th class="text-left" colspan="8" style="background-color: #f2f2f2">All users</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Roles</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody id="users-info2">
+
+<!--                                <tr th:each="user : ${users}">-->
+<!--                                    <td th:text="${user.getId()}"></td>-->
+<!--                                    <td>-->
+<!--                                        <p th:text="${user.getUsername()}"></p>-->
+<!--                                    </td>-->
+<!--                                    <td th:text="${user.getName()}"></td>-->
+<!--                                    <td th:text="${user.getAge()}"></td>-->
+<!--                                    <td th:text="${user.getEmail()}"></td>-->
+<!--                                    <td>-->
+<!--                                        <span th:each="role : ${user.getRoles()}">-->
+<!--                                            <span th:text="${role.getName()}"></span><br/>-->
+<!--                                        </span>-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <a class="btn btn-primary eBtn"-->
+<!--                                           th:href="@{users/findOne/(id=${user.id})}">Edit</a>-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <a class="btn btn-danger dBtn"-->
+<!--                                           th:href="@{users/findOne/(id=${user.id})}">Delete</a>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="myForm">
+                            <form th:action="@{/admin/users/update}" th:method="PATCH">
+                                <!-- модальное окно редактирования юзера -->
+                                <div aria-hidden="true" aria-labelledby="exampleModalLongTitle"
+                                     class="modal fade bd-example-modal-lg" id="editModal"
+                                     role="dialog" tabindex="-1">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Edit user</h5>
+                                                <button aria-label="Close" class="close" data-dismiss="modal"
+                                                        type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- BODY-->
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold" for="id">ID</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="id"
+                                                           name="id"
+                                                           readonly type="text" value=""/>
+                                                </div>
+
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="username">Username</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="username"
+                                                           minlength="5"
+                                                           name="username" required type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold" for="name">Name</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="name"
+                                                           minlength="5"
+                                                           name="name" required type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold" for="age">Age</label>
+                                                    <div class="input-group col-6 mx-auto">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary" id="decrementAge"
+                                                                    type="button">-</button>
+                                                        </span>
+                                                        <input class="text-center form-control" id="age" minlength="1"
+                                                               name="age" required type="number" value="0">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-primary" id="incrementAge"
+                                                                    type="button">+</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="password">Password</label>
+                                                    <input class="text-center mx-auto form-control col-6"
+                                                           id="password"
+                                                           minlength="5" name="password" required type="password"
+                                                           value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold" for="email">Email</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="email"
+                                                           minlength="5"
+                                                           name="email" required type="email" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center">
+                                                    <label class="d-block  font-weight-bold"
+                                                           for="userRole">Role:</label>
+                                                    <label class="d-inline-block mx-3">
+                                                        <input class="form-control" id="userRole" name="roles"
+                                                               type="checkbox"
+                                                               value="1"> Пользователь
+                                                    </label>
+                                                    <label class="d-inline-block mx-3">
+                                                        <input class="form-control" id="adminRole" name="roles"
+                                                               type="checkbox"
+                                                               value="2"> Администратор
+                                                    </label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                                            type="button">
+                                                        Close
+                                                    </button>
+                                                    <input class="btn btn-primary" type="submit" value="Edit">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--            модальное окно удаления юзера-->
+                        <div class="myDeleteForm">
+                            <form th:action="@{/admin/users/delete}" th:method="DELETE">
+                                <div aria-hidden="true" aria-labelledby="deleteModalLong"
+                                     class="modal fade bd-example-modal-lg" id="deleteModal"
+                                     role="dialog" tabindex="-1">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLong">Delete user</h5>
+                                                <button aria-label="Close" class="close" data-dismiss="modal"
+                                                        type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold" for="deleteId">ID</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="deleteId"
+                                                           name="Id"
+                                                           readonly type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="deleteUsername">Username</label>
+                                                    <input class="text-center mx-auto form-control col-6"
+                                                           id="deleteUsername"
+                                                           name="username" readonly type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="deleteName">Name</label>
+                                                    <input class="text-center mx-auto form-control col-6"
+                                                           id="deleteName"
+                                                           name="name" readonly type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="deleteAge">Age</label>
+                                                    <input class="text-center mx-auto form-control col-6" id="deleteAge"
+                                                           name="age"
+                                                           readonly type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center mx-auto">
+                                                    <label class="form-label font-weight-bold"
+                                                           for="deleteEmail">Email</label>
+                                                    <input class="text-center mx-auto form-control col-6"
+                                                           id="deleteEmail"
+                                                           name="email" readonly type="text" value=""/>
+                                                </div>
+                                                <div class="mb-3 text-center">
+                                                    <label class="d-block  font-weight-bold"
+                                                           for="deleteUserRole">Role:</label>
+                                                    <label class="d-inline-block mx-3">
+                                                        <input class="form-control" disabled id="deleteUserRole"
+                                                               name="roles"
+                                                               type="checkbox" value="1"> Пользователь
+                                                    </label>
+                                                    <label class="d-inline-block mx-3">
+                                                        <input class="form-control" disabled id="deleteAdminRole"
+                                                               name="roles" type="checkbox" value="2"> Администратор
+                                                    </label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                                            type="button">
+                                                        Close
+                                                    </button>
+                                                    <input class="btn btn-danger" type="submit" value="Delete">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--                        Создание юзера-->
+                        <div aria-labelledby="profile-tab" class="tab-pane fade" id="profile" role="tabpanel">
+                            <table class="table table-bordered">
+                                <thead style="background-color: #f7f7f7">
+                                <tr>
+                                    <th class="text-left" colspan="7">Add new user</th>
+                                </tr>
+                                </thead>
+                                <tr style="background-color: white">
+                                    <td>
+<!--                                        <form class="col-md-4 justify-content-center mx-auto"-->
+<!--                                              th:action="@{/admin/users/new}"-->
+<!--                                              th:method="POST">-->
+
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold" for="newID">ID</label>-->
+<!--                                                <input class="form-control" disabled id="newID"-->
+<!--                                                       th:value="${nextUserId}"-->
+<!--                                                       type="text">-->
+<!--                                            </div>-->
+
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold"-->
+<!--                                                       for="newUsername">Username</label>-->
+<!--                                                <input class="form-control" id="newUsername" minlength="5"-->
+<!--                                                       name="username"-->
+<!--                                                       required type="text">-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold" for="newName">Name</label>-->
+<!--                                                <input class="form-control" id="newName" minlength="5" name="name"-->
+<!--                                                       required type="text">-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold" for="newAge">Age</label>-->
+<!--                                                <input class="form-control" id="newAge" minlength="1" name="age"-->
+<!--                                                       required type="number">-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold"-->
+<!--                                                       for="newPassword">Password</label>-->
+<!--                                                <input class="form-control" id="newPassword" minlength="5"-->
+<!--                                                       name="password" required type="password">-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label class="form-label font-weight-bold" for="newEmail">Email</label>-->
+<!--                                                <input class="form-control" id="newEmail" minlength="5" name="email"-->
+<!--                                                       required type="email">-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center">-->
+<!--                                                <label><input name="roles" type="checkbox" value="1">-->
+<!--                                                    Пользователь</label><br>-->
+<!--                                                <label><input name="roles" type="checkbox" value="2">-->
+<!--                                                    Администратор</label>-->
+<!--                                            </div>-->
+<!--                                            <div class="mb-3 text-center mx-auto">-->
+<!--                                                <button class="btn btn-success" type="submit">Add new user</button>-->
+<!--                                            </div>-->
+
+<!--                                        </form>-->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div aria-labelledby="v-pills-profile-tab" class="tab-pane fade" id="user-tab" role="tabpanel"
+                 style="margin-top: 15px">
+                <h1>User information-page</h1>
+                <table class="table table-striped">
+                    <thead style="background-color: #f7f7f7">
+                    <tr>
+                        <th class="text-left" colspan="8" style="background-color: #f2f2f2">About user</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Roles</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--                    <tr th:object="${user}">-->
+                    <!--                        <td th:text="${user.getId()}"></td>-->
+                    <!--                        <td>-->
+                    <!--                            <p th:text="${user.getUsername()}"></p>-->
+                    <!--                        </td>-->
+                    <!--                        <td th:text="${user.getName()}"></td>-->
+                    <!--                        <td th:text="${user.getAge()}"></td>-->
+                    <!--                        <td th:text="${user.getEmail()}"></td>-->
+                    <!--                        <td>-->
+                    <!--                            <span th:each="role : ${user.getRoles()}">-->
+                    <!--                                <span th:text="${role.getName()}"></span><br/>-->
+                    <!--                            </span>-->
+                    <!--                        </td>-->
+                    <!--                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="js/main.js" type="text/javascript"></script>
+
+</body>
+
+</html>
+
+
+
