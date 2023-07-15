@@ -33,9 +33,9 @@ public class AdminController {
     }
 
 
-    @GetMapping("/findOne")
+    @GetMapping("/findOne/{id}")
     @ResponseBody
-    public User findOne(Long id) {
+    public User findOne(@PathVariable Long id) {
         return userServiceImpl.findUserById(id);
     }
 
