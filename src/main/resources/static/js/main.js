@@ -48,7 +48,7 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(data => {
                 if (data === "ok") {
-                    console.log("User updated successfully");
+                    alert("User updated successfully")
                     $('#editModal').modal('hide');
                     updateUserList();
 
@@ -71,7 +71,7 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(data => {
                 if (data === "ok") {
-                    console.log("User deleted successfully");
+                    alert("User deleted successfully")
                     $('#deleteModal').modal('hide');
                     updateUserList();
 
@@ -84,6 +84,75 @@ $(document).ready(function () {
                 console.log(error); // Обработка ошибки при необходимости
             });
     });
+
+
+
+
+
+
+
+    document.querySelector("#submitNew").addEventListener('click', function (event) {
+        event.preventDefault();
+
+        var role = [];
+        if (document.querySelector("#newUserRole").checked) {
+            role.push({
+                "id": 1,
+                "name": "ROLE_USER"
+            });
+        }
+        if (document.querySelector("#newAdminRole").checked) {
+            role.push({
+                "id": 2,
+                "name": "ROLE_ADMIN"
+            });
+        }
+
+        fetch("api/admin/new", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username": document.querySelector("#newUsername").value,
+                "name": document.querySelector("#newName").value,
+                "age": document.querySelector("#newAge").value,
+                "password": document.querySelector("#newPassword").value,
+                "email": document.querySelector("#newEmail").value,
+                "roles": role
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "ok") {
+
+                    alert("User created successfully")
+                    updateUserList();
+
+                    $('#newUsername').val("");
+                    $('#newEmail').val("");
+                    $('#newName').val("");
+                    $('#newPassword').val("");
+                    $('#newAge').val("");
+                    $('#newAdminRole').prop('checked', false);
+                    $('#newUserRole').prop('checked', false);
+
+
+
+
+                } else {
+                    console.log("Unexpected response: " + data);
+                }
+            })
+            .catch(error => {
+                console.log(error); // Обработка ошибки при необходимости
+            });
+    });
+
+
+
+
+
 
 
 
@@ -223,11 +292,11 @@ $(document).ready(function () {
             `;
                 }
 
-                // Отменить действие по умолчанию для кнопок eBtn и dBtn
                 const deleteButtons = document.querySelectorAll('.dBtn');
 
-
                 const editButtons = document.querySelectorAll('.eBtn');
+
+
                 editButtons.forEach(button => {
                     button.addEventListener('click', event => {
                         event.preventDefault();

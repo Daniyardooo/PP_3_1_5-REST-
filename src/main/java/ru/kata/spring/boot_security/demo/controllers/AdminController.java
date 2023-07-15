@@ -67,7 +67,7 @@ public class AdminController {
 //            return "redirect:/admin/users?error=User already exists ";
 //        }
         userServiceImpl.saveUser(user);
-        return "Ok";
+        return "ok";
     }
 
 }
