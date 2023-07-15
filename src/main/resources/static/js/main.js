@@ -44,6 +44,74 @@ $(document).ready(function () {
             $("#age").val(age - 1);
         }
     });
+    var user = {
+        "id": 1,
+        "username": "john_doe",
+        "name": "John Doe",
+        "age": 30,
+        "password": "password123",
+        "email": "john.doe@example.com",
+        "roles": [
+            {
+                "id": 1,
+                "name": "ROLE_USER"
+            },
+            {
+                "id": 2,
+                "name": "ROLE_ADMIN"
+            }
+        ]
+    };
+
+    $("#submitEdit").on('click', function (event) {
+        event.preventDefault();
+        // console.log($(this).parent().find("#id").val());
+        // console.log($("#id").id);
+        console.log($("#adminRole").prop("checked"));
+        console.log($("#userRole").prop("checked"));
+        var role =[];
+        if($("#userRole").prop("checked")){
+            role.push(
+                {
+                    "id": 1,
+                    "name": "ROLE_USER"
+                }
+            )
+        }
+        if($("#adminRole").prop("checked")){
+            role.push(
+                {
+                    "id": 2,
+                    "name": "ROLE_ADMIN"
+                }
+            )
+        }
+        $.ajax("api/admin/update", {
+            method: "put",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "id": $("#id").val(),
+                "username": $("#username").val(),
+                "name": $("#name").val(),
+                "age": $("#age").val(),
+                "password": $("#password").val(),
+                "email": $("#email").val(),
+                "roles": role
+            }),
+            dataType: "json",
+            // success: function (msg) {
+            //     $("#users")
+            //         .find("#" + msg)
+            //         .text(";;;");
+            // }
+        });
+    });
+
+
+
+
+
+
 
 
     console.log("парсим принципала для /user")
@@ -163,7 +231,8 @@ $(document).ready(function () {
                         }
                     });
 
-                    $('.myForm #editModal').modal();                });
+                    $('.myForm #editModal').modal();
+                });
             });
 
 
@@ -174,12 +243,33 @@ $(document).ready(function () {
                     event.preventDefault();
 
 
+                    const href = button.getAttribute('href');
+                    $.get(href, function(user, status) {
+                        console.log(user);
 
+                        $('#deleteId').val(user.id);
+                        $('#deleteUsername').val(user.username);
+                        $('#deleteEmail').val(user.email);
+                        $('#deleteName').val(user.name);
+                        $('#deleteAge').val(user.age);
+                        // $('#password').val(user.password);
 
+                        for (var i = 0; i < user.roles.length; i++) {
+                            var role = user.roles[i];
+                            console.log(user.roles)
+                            if (role.name === 'ROLE_ADMIN') {
+                                $('#deleteAdminRole').prop('checked', true);
+                            }
+                            if (role.name === 'ROLE_USER') {
+                                $('#deleteUserRole').prop('checked', true);
+                            }
+                        }
+                    });
+
+                    $('.myDeleteForm #deleteModal').modal();
                 });
             });
         })
-        .catch(error => console.error(error));
 
 
 })

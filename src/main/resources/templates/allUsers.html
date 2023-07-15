@@ -82,33 +82,11 @@
                                 </thead>
                                 <tbody id="users-info2">
 
-<!--                                <tr th:each="user : ${users}">-->
-<!--                                    <td th:text="${user.getId()}"></td>-->
-<!--                                    <td>-->
-<!--                                        <p th:text="${user.getUsername()}"></p>-->
-<!--                                    </td>-->
-<!--                                    <td th:text="${user.getName()}"></td>-->
-<!--                                    <td th:text="${user.getAge()}"></td>-->
-<!--                                    <td th:text="${user.getEmail()}"></td>-->
-<!--                                    <td>-->
-<!--                                        <span th:each="role : ${user.getRoles()}">-->
-<!--                                            <span th:text="${role.getName()}"></span><br/>-->
-<!--                                        </span>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <a class="btn btn-primary eBtn"-->
-<!--                                           th:href="@{users/findOne/(id=${user.id})}">Edit</a>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <a class="btn btn-danger dBtn"-->
-<!--                                           th:href="@{users/findOne/(id=${user.id})}">Delete</a>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
                         <div class="myForm">
-                            <form th:action="@{/admin/users/update}" th:method="PATCH">
+                            <form>
                                 <!-- модальное окно редактирования юзера -->
                                 <div aria-hidden="true" aria-labelledby="exampleModalLongTitle"
                                      class="modal fade bd-example-modal-lg" id="editModal"
@@ -192,18 +170,19 @@
                                                             type="button">
                                                         Close
                                                     </button>
-                                                    <input class="btn btn-primary" type="submit" value="Edit">
+                                                    <input id="submitEdit"  class="btn btn-primary" type="submit">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
+
                         </div>
 
                         <!--            модальное окно удаления юзера-->
                         <div class="myDeleteForm">
-                            <form th:action="@{/admin/users/delete}" th:method="DELETE">
+                            <form>
                                 <div aria-hidden="true" aria-labelledby="deleteModalLong"
                                      class="modal fade bd-example-modal-lg" id="deleteModal"
                                      role="dialog" tabindex="-1">
@@ -269,7 +248,7 @@
                                                             type="button">
                                                         Close
                                                     </button>
-                                                    <input class="btn btn-danger" type="submit" value="Delete">
+                                                    <input id="submitDelete" class="btn btn-danger" type="submit" value="Delete">
                                                 </div>
                                             </div>
                                         </div>

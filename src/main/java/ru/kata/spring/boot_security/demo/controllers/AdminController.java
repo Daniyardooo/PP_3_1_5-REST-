@@ -10,7 +10,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("api/admin")
 public class AdminController {
 
@@ -40,13 +40,14 @@ public class AdminController {
     }
 
 
-    @PatchMapping("/update")
+    @PutMapping("/update")
     @ResponseBody
-    public String updateUserById(@RequestBody User user, Principal principal) {
-        if (principal.getName().equals(userServiceImpl.findUserById(user.getId()).getUsername()) && !principal.getName().equals(user.getUsername())) {
-            userServiceImpl.updateUserById(user.getId(), user);
-            return "redirect:/login";
-        }
+    public String updateUserById(@RequestBody User user) {
+
+//        if (principal.getName().equals(userServiceImpl.findUserById(user.getId()).getUsername()) && !principal.getName().equals(user.getUsername())) {
+//            userServiceImpl.updateUserById(user.getId(), user);
+//            return "redirect:/login";
+//        }
         userServiceImpl.updateUserById(user.getId(), user);
         return "ok";
     }
