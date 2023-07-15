@@ -4,32 +4,6 @@
 $(document).ready(function () {
 
 
-    $('.table .dBtn').on('click', function (event) {
-        event.preventDefault();
-
-        var href = $(this).attr('href');
-
-        $.get(href, function (user, status) {
-            $('#deleteId').val(user.id);
-            $('#deleteUsername').val(user.username);
-            $('#deleteEmail').val(user.email);
-            $('#deleteName').val(user.name);
-            $('#deleteAge').val(user.age);
-
-            for (var i = 0; i < user.roles.length; i++) {
-                var role = user.roles[i];
-                console.log(user.roles)
-                if (role.name === 'ROLE_ADMIN') {
-                    $('#deleteAdminRole').prop('checked', true);
-                }
-                if (role.name === 'ROLE_USER') {
-                    $('#deleteUserRole').prop('checked', true);
-                }
-            }
-        });
-
-        $('.myDeleteForm #deleteModal').modal();
-    });
 
     $("#incrementAge").click(function () {
         var age = parseInt($("#age").val());
@@ -42,24 +16,7 @@ $(document).ready(function () {
             $("#age").val(age - 1);
         }
     });
-    var user = {
-        "id": 1,
-        "username": "john_doe",
-        "name": "John Doe",
-        "age": 30,
-        "password": "password123",
-        "email": "john.doe@example.com",
-        "roles": [
-            {
-                "id": 1,
-                "name": "ROLE_USER"
-            },
-            {
-                "id": 2,
-                "name": "ROLE_ADMIN"
-            }
-        ]
-    };
+
 
     $("#submitEdit").on('click', function (event) {
         event.preventDefault();
