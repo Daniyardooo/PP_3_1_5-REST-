@@ -48,7 +48,7 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(data => {
                 if (data === "ok") {
-                    alert("User updated successfully")
+                    console.log("User updated successfully")
                     $('#editModal').modal('hide');
                     updateUserList();
 
@@ -62,7 +62,7 @@ $(document).ready(function () {
     });
 
 
-    $("#submitDelete").on('click', function (event) {
+    document.querySelector("#submitDelete").addEventListener('click', function (event) {
         event.preventDefault();
         console.log($("#id").val());
         fetch("api/admin/delete?id=" + $("#deleteId").val(), {
@@ -71,7 +71,7 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(data => {
                 if (data === "ok") {
-                    alert("User deleted successfully")
+                    console.log("User deleted successfully")
                     $('#deleteModal').modal('hide');
                     updateUserList();
 
@@ -126,7 +126,11 @@ $(document).ready(function () {
             .then(data => {
                 if (data === "ok") {
 
-                    alert("User created successfully")
+                    console.log("User created successfully")
+                    $('#alert-create').css('visibility','visible');
+
+
+
                     updateUserList();
 
                     $('#newUsername').val("");
@@ -138,9 +142,11 @@ $(document).ready(function () {
                     $('#newUserRole').prop('checked', false);
 
 
+                } if(data ==="exist"){
+                    alert("User with username " + document.querySelector("#newUsername").value + " already exist")
+                }
 
-
-                } else {
+                else {
                     console.log("Unexpected response: " + data);
                 }
             })
@@ -151,17 +157,11 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
     function getPrincipal() {
         return fetch('/api/user')
             .then(response => response.json())
             .catch(error => {
                 console.error(error);
-                console.log("ПОХОДУ ТУТ")
                 throw error;
             });
     }
@@ -170,7 +170,6 @@ $(document).ready(function () {
     console.log("парсим принципала для /user");
 
     async function fillUserHeader() {
-        console.log('парсим принципала для /user');
         try {
             const user = await getPrincipal();
 
@@ -187,13 +186,30 @@ $(document).ready(function () {
                 console.log(roleElement);
                 roleElement.textContent = role.name;
                 rolesElement.appendChild(roleElement);
-                rolesElement.appendChild(document.createElement('br'));
+                rolesElement.insertAdjacentText('beforeend', ' ')
             });
 
         } catch (error) {
             console.error(error);
-            console.log("OSHIBKA")
         }
+
+    }
+
+    async function fillAdminHeader() {
+
+        const user = await getPrincipal();
+
+        document.querySelector("#username2").textContent = user.username;
+
+        // Update roles
+        const rolesElement2 = document.getElementById('roles2');
+        rolesElement2.innerHTML = '';
+        user.roles.forEach(role => {
+            const roleElement2 = document.createElement('span');
+            roleElement2.textContent = role.name;
+            rolesElement2.appendChild(roleElement2);
+            rolesElement2.insertAdjacentText('beforeend', ' ')
+        });
 
     }
 
@@ -242,23 +258,6 @@ $(document).ready(function () {
 
 
 
-    async function fillAdminHeader() {
-
-        const user = await getPrincipal();
-
-        document.querySelector("#username2").textContent = user.username;
-
-        // Update roles
-        const rolesElement2 = document.getElementById('roles2');
-        rolesElement2.innerHTML = '';
-        user.roles.forEach(role => {
-            const roleElement2 = document.createElement('span');
-            roleElement2.textContent = role.name;
-            rolesElement2.appendChild(roleElement2);
-            rolesElement2.appendChild(document.createElement('br'));
-        });
-
-    }
 
 
     console.log("заполняем таблицу на /admin")
@@ -375,6 +374,11 @@ $(document).ready(function () {
         });
     }
 
+
+    document.querySelector("#profile-tab").addEventListener('click', function (event) {
+        $('#alert-create').css('visibility','hidden');
+
+    });
 
 })
 

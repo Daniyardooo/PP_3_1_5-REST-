@@ -5,23 +5,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userServiceImpl;
 
     @Autowired
     public UserController(UserServiceImpl userServiceImpl) {
@@ -32,10 +31,7 @@ public class UserController {
     @GetMapping("/user")
     @ResponseBody
     public User getUserInfo(Principal principal) {
-        String testPrincipal = "Daniyardo";
-        String username = testPrincipal;
-        User user = userServiceImpl.findByUsername(username).get();
-        return user;
+        return userServiceImpl.findByUsername(principal.getName()).get();
     }
 
     @GetMapping("/logout")

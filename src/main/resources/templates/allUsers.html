@@ -22,7 +22,7 @@
         <span id="username2"></span>
     </strong>
     <span> with roles: </span>
-    <div id="roles2" class="d-inline"></div>
+    <div id="roles2" style="display: inline"></div>
     <div style="position: absolute; top: 15px; right: 10px;">
         <a style="color: #999" href="/logout">Logout</a>
     </div>
@@ -268,12 +268,6 @@
                                     <td>
                                         <form class="col-md-4 justify-content-center mx-auto">
 
-                                            <div class="mb-3 text-center">
-                                                <label class="form-label font-weight-bold" for="newID">ID</label>
-                                                <input class="form-control" disabled id="newID"
-                                                       value=""
-                                                       type="text">
-                                            </div>
 
                                             <div class="mb-3 text-center">
                                                 <label class="form-label font-weight-bold"
@@ -311,6 +305,9 @@
                                             </div>
                                             <div class="mb-3 text-center mx-auto">
                                                 <button id = "submitNew" class="btn btn-success" type="submit">Add new user</button>
+                                            </div>
+                                            <div id="alert-create" class="alert alert-success" role="alert" style="visibility: hidden;" >
+                                                <strong>Successfully!</strong>
                                             </div>
 
                                         </form>
