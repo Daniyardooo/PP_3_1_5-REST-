@@ -53,10 +53,8 @@ public class AdminController {
             return "principalNameEdit";
         }
         Optional<User> userFromDB = userServiceImpl.findByUsername(user.getUsername());
-        if (userFromDB.isPresent()) {
-            if (userFromDB.get().getUsername().equals(principal.getName()) && !userFromDB.get().getUsername().equals(user.getUsername())) {
-                return "exist";
-            }
+        if (userFromDB.isPresent() && !user.getId().equals(userFromDB.get().getId())) {
+            return "exist";
         }
         userServiceImpl.updateUserById(user.getId(), user);
         return "ok";

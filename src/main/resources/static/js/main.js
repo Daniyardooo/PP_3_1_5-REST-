@@ -19,14 +19,12 @@ $(document).ready(function () {
         var role = [];
         if (document.querySelector("#userRole").checked) {
             role.push({
-                "id": 1,
-                "name": "ROLE_USER"
+                "id": 1, "name": "ROLE_USER"
             });
         }
         if (document.querySelector("#adminRole").checked) {
             role.push({
-                "id": 2,
-                "name": "ROLE_ADMIN"
+                "id": 2, "name": "ROLE_ADMIN"
             });
         }
         let id = document.querySelector("#id").value;
@@ -42,11 +40,9 @@ $(document).ready(function () {
 
 
             fetch("api/admin/update", {
-                method: "PUT",
-                headers: {
+                method: "PUT", headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+                }, body: JSON.stringify({
                     "id": id,
                     "username": username,
                     "name": name,
@@ -68,10 +64,9 @@ $(document).ready(function () {
                     if (data === "exist") {
                         alert("User with username " + document.querySelector("#username").value + " already exist")
                     }
-                    if(data === "principalNameEdit"){
+                    if (data === "principalNameEdit") {
                         window.location.href = "http://localhost:8080/login?loginAgain=true";
-                    }
-                    else {
+                    } else {
                         console.log("Unexpected response: " + data);
                     }
                 })
@@ -115,14 +110,12 @@ $(document).ready(function () {
         var role = [];
         if (document.querySelector("#newUserRole").checked) {
             role.push({
-                "id": 1,
-                "name": "ROLE_USER"
+                "id": 1, "name": "ROLE_USER"
             });
         }
         if (document.querySelector("#newAdminRole").checked) {
             role.push({
-                "id": 2,
-                "name": "ROLE_ADMIN"
+                "id": 2, "name": "ROLE_ADMIN"
             });
         }
 
@@ -132,24 +125,16 @@ $(document).ready(function () {
         let password = document.querySelector("#newPassword").value;
         let email = document.querySelector("#newEmail").value;
 
-        if (username === "" || name === "" || age === "" || password === "" || email === "" || role.length < 1)
-        {
+        if (username === "" || name === "" || age === "" || password === "" || email === "" || role.length < 1) {
             $('#alert-create-warn').css('visibility', 'visible');
         } else {
             $('#alert-create-warn').css('visibility', 'hidden');
 
             fetch("api/admin/new", {
-                method: "POST",
-                headers: {
+                method: "POST", headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "username": username,
-                    "name": name,
-                    "age": age,
-                    "password": password,
-                    "email": email,
-                    "roles": role
+                }, body: JSON.stringify({
+                    "username": username, "name": name, "age": age, "password": password, "email": email, "roles": role
                 })
             })
                 .then(response => response.text())
@@ -394,7 +379,6 @@ $(document).ready(function () {
     document.querySelector("#profile-tab").addEventListener('click', function (event) {
         $('#alert-create').css('visibility', 'hidden');
     });
-
 
 
 })
