@@ -44,13 +44,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public User(String username, String name, Integer age, String password, String email) {
-        this.username = username;
-        this.name = name;
-        this.age = age;
-        this.password = password;
-        this.email = email;
-    }
 
     public String getName() {
         return name;
@@ -70,10 +63,6 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {

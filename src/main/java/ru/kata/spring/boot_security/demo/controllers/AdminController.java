@@ -42,7 +42,7 @@ public class AdminController {
             return "redirect:/login";
         }
         Optional<User> userFromDB = userServiceImpl.findByUsername(user.getUsername());
-        if(userFromDB.isPresent()) {
+        if (userFromDB.isPresent()) {
             if (userFromDB.get().getUsername().equals(principal.getName())) {
                 return "exist";
             }
