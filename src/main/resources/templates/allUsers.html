@@ -156,20 +156,24 @@
                                                     <label class="d-inline-block mx-3">
                                                         <input class="form-control" id="userRole" name="roles"
                                                                type="checkbox"
-                                                               value="1"> Пользователь
+                                                               value="1"> User
                                                     </label>
                                                     <label class="d-inline-block mx-3">
                                                         <input class="form-control" id="adminRole" name="roles"
                                                                type="checkbox"
-                                                               value="2"> Администратор
+                                                               value="2"> Admin
                                                     </label>
                                                 </div>
-                                                <div class="modal-footer">
+                                                <div class="modal-footer" style="display: block">
+                                                    <div id="alert-edit" class="alert alert-danger" role="alert"
+                                                         style="visibility: hidden;">
+                                                        <strong>all fields must be filled</strong>
+                                                    </div>
                                                     <button class="btn btn-secondary" data-dismiss="modal"
                                                             type="button">
                                                         Close
                                                     </button>
-                                                    <input id="submitEdit"  class="btn btn-primary" type="submit">
+                                                    <input id="submitEdit" class="btn btn-primary" type="submit">
                                                 </div>
                                             </div>
                                         </div>
@@ -242,12 +246,13 @@
                                                                name="roles" type="checkbox" value="2"> Администратор
                                                     </label>
                                                 </div>
-                                                <div class="modal-footer">
+                                                <div class="modal-footer" style="display: block">
                                                     <button class="btn btn-secondary" data-dismiss="modal"
                                                             type="button">
                                                         Close
                                                     </button>
-                                                    <input id="submitDelete" class="btn btn-danger" type="submit" value="Delete">
+                                                    <input id="submitDelete" class="btn btn-danger" type="submit"
+                                                           value="Delete">
                                                 </div>
                                             </div>
                                         </div>
@@ -274,28 +279,28 @@
                                                        for="newUsername">Username</label>
                                                 <input class="form-control" id="newUsername" minlength="5"
                                                        name="username"
-                                                       required type="text">
+                                                       required type="text" value="">
                                             </div>
                                             <div class="mb-3 text-center">
                                                 <label class="form-label font-weight-bold" for="newName">Name</label>
                                                 <input class="form-control" id="newName" minlength="5" name="name"
-                                                       required type="text">
+                                                       required type="text" value="">
                                             </div>
                                             <div class="mb-3 text-center">
                                                 <label class="form-label font-weight-bold" for="newAge">Age</label>
                                                 <input class="form-control" id="newAge" minlength="1" name="age"
-                                                       required type="number">
+                                                       required type="number" value="">
                                             </div>
                                             <div class="mb-3 text-center">
                                                 <label class="form-label font-weight-bold"
                                                        for="newPassword">Password</label>
                                                 <input class="form-control" id="newPassword" minlength="5"
-                                                       name="password" required type="password">
+                                                       name="password" required type="password" value="">
                                             </div>
                                             <div class="mb-3 text-center">
                                                 <label class="form-label font-weight-bold" for="newEmail">Email</label>
                                                 <input class="form-control" id="newEmail" minlength="5" name="email"
-                                                       required type="email">
+                                                       required type="email" value="">
                                             </div>
                                             <div class="mb-3 text-center">
                                                 <label><input name="roles" id="newUserRole" type="checkbox" value="1">
@@ -304,10 +309,17 @@
                                                     Администратор</label>
                                             </div>
                                             <div class="mb-3 text-center mx-auto">
-                                                <button id = "submitNew" class="btn btn-success" type="submit">Add new user</button>
+                                                <button id="submitNew" class="btn btn-success" type="submit">Add new
+                                                    user
+                                                </button>
                                             </div>
-                                            <div id="alert-create" class="alert alert-success" role="alert" style="visibility: hidden;" >
+                                            <div id="alert-create" class="alert alert-success" role="alert"
+                                                 style="visibility: hidden;">
                                                 <strong>Successfully!</strong>
+                                            </div>
+                                            <div id="alert-create-warn" class="alert alert-danger" role="alert"
+                                                 style="visibility: hidden; ">
+                                                <strong>all fields must be filled</strong>
                                             </div>
 
                                         </form>

@@ -5,14 +5,14 @@
 
 $(document).ready(function () {
 
-
     fillUserHeader();
     fillAdminHeader();
-    updateUserList();
+    updateUsersList();
     fillUserTableForUser();
     fillUserTableForAdmin();
 
 
+    //Кнопка Submit в модальном окне
     document.querySelector("#submitEdit").addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -29,39 +29,55 @@ $(document).ready(function () {
                 "name": "ROLE_ADMIN"
             });
         }
+        let id = document.querySelector("#id").value;
+        let username = document.querySelector("#username").value;
+        let name = document.querySelector("#name").value;
+        let age = document.querySelector("#age").value;
+        let password = document.querySelector("#password").value;
+        let email = document.querySelector("#email").value;
 
-        fetch("api/admin/update", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "id": document.querySelector("#id").value,
-                "username": document.querySelector("#username").value,
-                "name": document.querySelector("#name").value,
-                "age": document.querySelector("#age").value,
-                "password": document.querySelector("#password").value,
-                "email": document.querySelector("#email").value,
-                "roles": role
-            })
-        })
-            .then(response => response.text())
-            .then(data => {
-                if (data === "ok") {
-                    console.log("User updated successfully")
-                    $('#editModal').modal('hide');
-                    updateUserList();
+        if (id === "" || username === "" || name === "" || age === "" || password === "" || email === "" || role.length < 1) {
+            $('#alert-edit').css('visibility', 'visible');
+        } else {
 
-                } else {
-                    console.log("Unexpected response: " + data);
-                }
+
+            fetch("api/admin/update", {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "id": id,
+                    "username": username,
+                    "name": name,
+                    "age": age,
+                    "password": password,
+                    "email": email,
+                    "roles": role
+                })
             })
-            .catch(error => {
-                console.log(error); // Обработка ошибки при необходимости
-            });
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "ok") {
+                        console.log("User updated successfully")
+                        $('#editModal').modal('hide');
+                        updateUsersList();
+
+                    }
+                    if (data === "exist") {
+                        alert("User with username " + document.querySelector("#username").value + " already exist")
+                    }
+                    else {
+                        console.log("Unexpected response: " + data);
+                    }
+                })
+                .catch(error => {
+                    console.log(error); // Обработка ошибки при необходимости
+                });
+        }
     });
 
-
+//Кнопка Delete в модальном окне
     document.querySelector("#submitDelete").addEventListener('click', function (event) {
         event.preventDefault();
         console.log($("#id").val());
@@ -73,7 +89,7 @@ $(document).ready(function () {
                 if (data === "ok") {
                     console.log("User deleted successfully")
                     $('#deleteModal').modal('hide');
-                    updateUserList();
+                    updateUsersList();
 
                 } else {
                     console.log("Unexpected response: " + data);
@@ -86,13 +102,11 @@ $(document).ready(function () {
     });
 
 
-
-
-
-
-
+//Кнопка add new user
     document.querySelector("#submitNew").addEventListener('click', function (event) {
         event.preventDefault();
+        $('#alert-create').css('visibility', 'hidden');
+        $('#alert-create-warn').css('visibility', 'hidden');
 
         var role = [];
         if (document.querySelector("#newUserRole").checked) {
@@ -108,55 +122,64 @@ $(document).ready(function () {
             });
         }
 
-        fetch("api/admin/new", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "username": document.querySelector("#newUsername").value,
-                "name": document.querySelector("#newName").value,
-                "age": document.querySelector("#newAge").value,
-                "password": document.querySelector("#newPassword").value,
-                "email": document.querySelector("#newEmail").value,
-                "roles": role
+        let username = document.querySelector("#newUsername").value;
+        let name = document.querySelector("#newName").value;
+        let age = document.querySelector("#newAge").value;
+        let password = document.querySelector("#newPassword").value;
+        let email = document.querySelector("#newEmail").value;
+
+        if (username === "" || name === "" || age === "" || password === "" || email === "" || role.length < 1)
+        {
+            $('#alert-create-warn').css('visibility', 'visible');
+        } else {
+            $('#alert-create-warn').css('visibility', 'hidden');
+
+            fetch("api/admin/new", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "username": username,
+                    "name": name,
+                    "age": age,
+                    "password": password,
+                    "email": email,
+                    "roles": role
+                })
             })
-        })
-            .then(response => response.text())
-            .then(data => {
-                if (data === "ok") {
+                .then(response => response.text())
+                .then(data => {
+                    if (data === "ok") {
 
-                    console.log("User created successfully")
-                    $('#alert-create').css('visibility','visible');
+                        console.log("User created successfully")
+                        $('#alert-create').css('visibility', 'visible');
 
-
-
-                    updateUserList();
-
-                    $('#newUsername').val("");
-                    $('#newEmail').val("");
-                    $('#newName').val("");
-                    $('#newPassword').val("");
-                    $('#newAge').val("");
-                    $('#newAdminRole').prop('checked', false);
-                    $('#newUserRole').prop('checked', false);
+                        updateUsersList();
+                        $('#newUsername').val("");
+                        $('#newEmail').val("");
+                        $('#newName').val("");
+                        $('#newPassword').val("");
+                        $('#newAge').val("");
+                        $('#newAdminRole').prop('checked', false);
+                        $('#newUserRole').prop('checked', false);
 
 
-                } if(data ==="exist"){
-                    alert("User with username " + document.querySelector("#newUsername").value + " already exist")
-                }
-
-                else {
-                    console.log("Unexpected response: " + data);
-                }
-            })
-            .catch(error => {
-                console.log(error); // Обработка ошибки при необходимости
-            });
+                    }
+                    if (data === "exist") {
+                        alert("User with username " + document.querySelector("#newUsername").value + " already exist")
+                    } else {
+                        console.log("Unexpected response: " + data);
+                    }
+                })
+                .catch(error => {
+                    console.log(error); // Обработка ошибки при необходимости
+                });
+        }
     });
 
 
-
+    // Берем текущего юзера
     function getPrincipal() {
         return fetch('/api/user')
             .then(response => response.json())
@@ -167,8 +190,7 @@ $(document).ready(function () {
     }
 
 
-    console.log("парсим принципала для /user");
-
+    // Заполняем хедер для юзера
     async function fillUserHeader() {
         try {
             const user = await getPrincipal();
@@ -195,6 +217,8 @@ $(document).ready(function () {
 
     }
 
+
+    // Заполняем хедер для админа
     async function fillAdminHeader() {
 
         const user = await getPrincipal();
@@ -213,12 +237,11 @@ $(document).ready(function () {
 
     }
 
+
+    // вкладка user для /user
     async function fillUserTableForUser() {
 
         const user = await getPrincipal();
-
-
-        console.log('заполняем таблицу на /user');
         const userInfoElement = document.getElementById('user-info');
         userInfoElement.innerHTML = `
       <tr>
@@ -234,12 +257,11 @@ $(document).ready(function () {
     `
     }
 
+    // вкладка user для /admin
     async function fillUserTableForAdmin() {
 
         const user = await getPrincipal();
 
-
-        console.log('заполняем таблицу на /user');
         const userInfoElement = document.getElementById('principal-info-admin');
         userInfoElement.innerHTML = `
       <tr>
@@ -256,13 +278,8 @@ $(document).ready(function () {
     }
 
 
-
-
-
-
-    console.log("заполняем таблицу на /admin")
-
-    function updateUserList() {
+    // обновляем таблицу всех юзеров на /admin
+    function updateUsersList() {
         fetch('/api/admin')
             .then(response => response.json())
             .then(users => {
@@ -291,14 +308,18 @@ $(document).ready(function () {
             `;
                 }
 
+                //получаем все кнопки вызова модальных окон Edit и Delete
                 const deleteButtons = document.querySelectorAll('.dBtn');
 
                 const editButtons = document.querySelectorAll('.eBtn');
 
 
+                // Слушатели для кнопок в таблице админа
+
                 editButtons.forEach(button => {
                     button.addEventListener('click', event => {
                         event.preventDefault();
+                        $('#alert-edit').css('visibility', 'hidden');
 
 
                         const href = button.getAttribute('href');
@@ -343,7 +364,6 @@ $(document).ready(function () {
                             $('#deleteEmail').val(user.email);
                             $('#deleteName').val(user.name);
                             $('#deleteAge').val(user.age);
-                            // $('#password').val(user.password);
 
                             for (var i = 0; i < user.roles.length; i++) {
                                 var role = user.roles[i];
@@ -361,6 +381,9 @@ $(document).ready(function () {
                     });
                 });
             })
+
+
+        // Кастомные стрелки для редактирования поля Age
         $("#incrementAge").click(function () {
             var age = parseInt($("#age").val());
             $("#age").val(age + 1);
@@ -375,10 +398,16 @@ $(document).ready(function () {
     }
 
 
+    //Алерт успешного создания нового юзера
     document.querySelector("#profile-tab").addEventListener('click', function (event) {
-        $('#alert-create').css('visibility','hidden');
-
+        $('#alert-create').css('visibility', 'hidden');
     });
+
+    //Алерт
+    // document.querySelector("#home-tab").addEventListener('click', function (event) {
+    //     $('#alert-edit').css('visibility', 'hidden');
+    // });
+
 
 })
 

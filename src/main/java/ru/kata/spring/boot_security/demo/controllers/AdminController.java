@@ -41,6 +41,12 @@ public class AdminController {
             userServiceImpl.updateUserById(user.getId(), user);
             return "redirect:/login";
         }
+        Optional<User> userFromDB = userServiceImpl.findByUsername(user.getUsername());
+        if(userFromDB.isPresent()) {
+            if (userFromDB.get().getUsername().equals(principal.getName())) {
+                return "exist";
+            }
+        }
         userServiceImpl.updateUserById(user.getId(), user);
         return "ok";
     }
