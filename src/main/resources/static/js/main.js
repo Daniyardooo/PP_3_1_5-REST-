@@ -64,14 +64,12 @@ $(document).ready(function () {
                         updateUsersList();
                         fillAdminHeader();
                         fillUserTableForAdmin();
-
-
                     }
                     if (data === "exist") {
                         alert("User with username " + document.querySelector("#username").value + " already exist")
                     }
                     if(data === "principalNameEdit"){
-                        window.location.href = "http://localhost:8080/login";
+                        window.location.href = "http://localhost:8080/login?loginAgain=true";
                     }
                     else {
                         console.log("Unexpected response: " + data);

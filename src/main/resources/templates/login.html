@@ -12,6 +12,16 @@
             height: 50vh;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const loginAgain = urlParams.get('loginAgain');
+            if (loginAgain === 'true') {
+                document.querySelector('#login-again').style.visibility = 'visible';
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="center-form">
@@ -25,7 +35,12 @@
         </div>
 
         <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
+        <div id="login-again" class="alert alert-danger" role="alert"
+             style="visibility: hidden; ">
+            <strong>Please log in again to continue</strong>
+        </div>
     </form>
 </div>
+
 </body>
 </html>
