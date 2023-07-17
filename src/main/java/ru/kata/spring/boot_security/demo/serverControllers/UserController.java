@@ -1,31 +1,29 @@
-package ru.kata.spring.boot_security.demo.controllers;
+package ru.kata.spring.boot_security.demo.serverControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class UserController {
 
-    private final UserService userServiceImpl;
+    private UserService userServiceImpl;
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl) {
+    public void setUserServiceImpl(UserService userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
-
     }
 
     @GetMapping("/user")

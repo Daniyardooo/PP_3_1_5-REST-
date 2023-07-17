@@ -12,7 +12,7 @@ $(document).ready(function () {
     fillUserTableForAdmin();
 
 
-    //Кнопка Submit в модальном окне
+    //Кнопка Submit в модальном окне редактирования
     document.querySelector("#submitEdit").addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -62,10 +62,16 @@ $(document).ready(function () {
                         console.log("User updated successfully")
                         $('#editModal').modal('hide');
                         updateUsersList();
+                        fillAdminHeader();
+                        fillUserTableForAdmin();
+
 
                     }
                     if (data === "exist") {
                         alert("User with username " + document.querySelector("#username").value + " already exist")
+                    }
+                    if(data === "principalNameEdit"){
+                        window.location.href = "http://localhost:8080/login";
                     }
                     else {
                         console.log("Unexpected response: " + data);
@@ -383,30 +389,14 @@ $(document).ready(function () {
             })
 
 
-        // Кастомные стрелки для редактирования поля Age
-        $("#incrementAge").click(function () {
-            var age = parseInt($("#age").val());
-            $("#age").val(age + 1);
-        });
-
-        $("#decrementAge").click(function () {
-            var age = parseInt($("#age").val());
-            if (age > 0) {
-                $("#age").val(age - 1);
-            }
-        });
     }
 
 
-    //Алерт успешного создания нового юзера
+    //Убираем алерт успешного создания юзера при переходе на вкладку New user
     document.querySelector("#profile-tab").addEventListener('click', function (event) {
         $('#alert-create').css('visibility', 'hidden');
     });
 
-    //Алерт
-    // document.querySelector("#home-tab").addEventListener('click', function (event) {
-    //     $('#alert-edit').css('visibility', 'hidden');
-    // });
 
 
 })
