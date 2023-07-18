@@ -44,20 +44,34 @@ public class AdminController {
     @ResponseBody
     public String updateUserById(@RequestBody User user, Principal principal, HttpServletRequest request, HttpServletResponse response) {
 
-        if (principal.getName().equals(userServiceImpl.findUserById(user.getId()).getUsername()) && !principal.getName().equals(user.getUsername())) {
-            userServiceImpl.updateUserById(user.getId(), user);
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null) {
-                new SecurityContextLogoutHandler().logout(request, response, auth);
+        User userFromDB = userServiceImpl.findUserById(user.getId());
+
+
+        if (userFromDB.getUsername().equals(principal.getName())) {
+            if (!userFromDB.getUsername().equals(user.getUsername())) {
+                if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
+                    return "exist";
+                }
+                userServiceImpl.updateUserById(user.getId(), user);
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth != null) {
+                    new SecurityContextLogoutHandler().logout(request, response, auth);
+                }
+                return "principalNameEdit";
             }
-            return "principalNameEdit";
+            if (userFromDB.getUsername().equals(user.getUsername())) {
+                userServiceImpl.updateUserById(user.getId(), user);
+                return "ok";
+            }
         }
-        Optional<User> userFromDB = userServiceImpl.findByUsername(user.getUsername());
-        if (userFromDB.isPresent() && !user.getId().equals(userFromDB.get().getId())) {
+        if (userFromDB.getUsername().equals(user.getUsername())) {
+            userServiceImpl.updateUserById(user.getId(), user);
+            return "ok";
+        } else {
             return "exist";
         }
-        userServiceImpl.updateUserById(user.getId(), user);
-        return "ok";
+
+
     }
 
     @DeleteMapping("/delete")
