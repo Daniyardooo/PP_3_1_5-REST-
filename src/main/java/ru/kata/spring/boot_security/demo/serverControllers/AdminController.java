@@ -45,33 +45,33 @@ public class AdminController {
     public String updateUserById(@RequestBody User user, Principal principal, HttpServletRequest request, HttpServletResponse response) {
 
         User userFromDB = userServiceImpl.findUserById(user.getId());
-
-
-        if (userFromDB.getUsername().equals(principal.getName())) {
-            if (!userFromDB.getUsername().equals(user.getUsername())) {
-                if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
-                    return "exist";
-                }
-                userServiceImpl.updateUserById(user.getId(), user);
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                if (auth != null) {
-                    new SecurityContextLogoutHandler().logout(request, response, auth);
-                }
-                return "principalNameEdit";
-            }
-            if (userFromDB.getUsername().equals(user.getUsername())) {
-                userServiceImpl.updateUserById(user.getId(), user);
-                return "ok";
-            }
-        }
         if (userFromDB.getUsername().equals(user.getUsername())) {
             userServiceImpl.updateUserById(user.getId(), user);
             return "ok";
         } else {
+            if (userFromDB.getUsername().equals(principal.getName())) {
+                if (!userFromDB.getUsername().equals(user.getUsername())) {
+                    if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
+                        return "exist";
+                    }
+                    userServiceImpl.updateUserById(user.getId(), user);
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    if (auth != null) {
+                        new SecurityContextLogoutHandler().logout(request, response, auth);
+                    }
+                    return "principalNameEdit";
+                }
+                if (userFromDB.getUsername().equals(user.getUsername())) {
+                    userServiceImpl.updateUserById(user.getId(), user);
+                    return "ok";
+                }
+            }
+        }
+        if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
             return "exist";
         }
-
-
+        userServiceImpl.updateUserById(user.getId(), user);
+        return "ok";
     }
 
     @DeleteMapping("/delete")
