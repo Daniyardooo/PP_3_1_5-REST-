@@ -60,11 +60,11 @@ public class AdminController {
                         new SecurityContextLogoutHandler().logout(request, response, auth);
                     }
                     return "principalNameEdit";
-                }
-                if (userFromDB.getUsername().equals(user.getUsername())) {
+                } else {
                     userServiceImpl.updateUserById(user.getId(), user);
                     return "ok";
                 }
+
             }
         }
         if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
