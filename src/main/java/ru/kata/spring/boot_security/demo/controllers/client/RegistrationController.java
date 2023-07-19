@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.serverControllers;
+package ru.kata.spring.boot_security.demo.controllers.client;
 
 import org.springframework.web.bind.annotation.GetMapping;
 

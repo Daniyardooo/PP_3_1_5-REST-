@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.clientControllers;
+package ru.kata.spring.boot_security.demo.controllers.client;
 
 
 import org.springframework.stereotype.Controller;

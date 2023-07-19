@@ -65,7 +65,7 @@ $(document).ready(function () {
                         alert("User with username " + document.querySelector("#username").value + " already exist")
                     }
                     if (data === "principalNameEdit") {
-                        window.location.href = "http://localhost:8080/login?loginAgain=true";
+                        window.location.href = "http://localhost:8080/logout";
                     } else {
                         console.log("Unexpected response: " + data);
                     }
@@ -140,9 +140,7 @@ $(document).ready(function () {
                 .then(response => response.text())
                 .then(data => {
                     if (data === "ok") {
-
-                        console.log("User created successfully")
-                        $('#alert-create').css('visibility', 'visible');
+                        $('#home-tab').tab('show');
 
                         updateUsersList();
                         $('#newUsername').val("");
@@ -210,7 +208,7 @@ $(document).ready(function () {
     // Заполняем хедер для админа
     async function fillAdminHeader() {
 
-        const user = await getPrincipal();
+        var user = await getPrincipal();
 
         document.querySelector("#username2").textContent = user.username;
 
@@ -375,10 +373,6 @@ $(document).ready(function () {
     }
 
 
-    //Убираем алерт успешного создания юзера при переходе на вкладку New user
-    document.querySelector("#profile-tab").addEventListener('click', function (event) {
-        $('#alert-create').css('visibility', 'hidden');
-    });
 
 
 })

@@ -1,6 +1,8 @@
-package ru.kata.spring.boot_security.demo.serverControllers;
+package ru.kata.spring.boot_security.demo.controllers.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -28,8 +30,8 @@ public class UserController {
 
     @GetMapping("/user")
     @ResponseBody
-    public User getUserInfo(Principal principal) {
-        return userServiceImpl.findByUsername(principal.getName()).get();
+    public ResponseEntity<User> getUserInfo(Principal principal) {
+        return new ResponseEntity<>(userServiceImpl.findByUsername(principal.getName()).get(), HttpStatus.OK);
     }
 
     @GetMapping("/logout")
