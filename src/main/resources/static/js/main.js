@@ -318,7 +318,6 @@ $(document).ready(function () {
                             $('#email').val(user.email);
                             $('#name').val(user.name);
                             $('#age').val(user.age);
-                            // $('#password').val(user.password);
 
                             for (var i = 0; i < user.roles.length; i++) {
                                 var role = user.roles[i];

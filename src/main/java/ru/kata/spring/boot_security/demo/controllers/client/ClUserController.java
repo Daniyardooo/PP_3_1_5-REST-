@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ClientUserController {
+public class ClUserController {
     @GetMapping("/user")
     public String getUserInfo() {
         return "user";

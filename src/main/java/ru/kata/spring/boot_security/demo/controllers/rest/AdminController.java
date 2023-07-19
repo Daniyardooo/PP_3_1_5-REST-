@@ -43,7 +43,7 @@ public class AdminController {
         String usernameFromDB = userServiceImpl.findUserById(user.getId()).getUsername();
         if (usernameFromDB.equals(user.getUsername())) {
             userServiceImpl.updateUserById(user.getId(), user);
-            new ResponseEntity<>("ok", HttpStatus.OK);
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         }
 
         if (userServiceImpl.findByUsername(user.getUsername()).isPresent()) {
